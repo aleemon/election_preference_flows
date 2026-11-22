@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Preference Flows in Australian Federal Politics</title>
+<meta name="description" content="Interactive Sankey diagrams of how preferences flowed in every Australian federal election from 1901 to 2025: nationally, by state and count by count in every seat.">
+<meta property="og:title" content="Preference Flows in Australian Federal Politics">
+<meta property="og:description" content="Interactive Sankey diagrams of how preferences flowed in every Australian federal election from 1901 to 2025: nationally, by state and count by count in every seat.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#3d2f8f">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="wrap">
+  <p id="loading" class="card muted" role="status">Loading election data…</p>
+  <header class="top">
+    <div class="kicker">Federal House of Representatives • 1901–2025</div>
+    <h1>Preference Flows in Australian Federal Politics</h1>
+    <p class="lede">How first-preference votes for each party flowed, through preferences, to the final result: nationally, by state, and count by count in every seat.</p>
+  </header>
+
+  <div class="tabs" role="tablist" aria-label="Views">
+    <button class="tab" role="tab" id="tab-flows" aria-controls="view-flows" aria-selected="true">Overall party preference flows</button>
+    <button class="tab" role="tab" id="tab-seats" aria-controls="view-seats" aria-selected="false">Preference flows by seat</button>
+  </div>
+
+  <div id="view-flows" role="tabpanel" aria-labelledby="tab-flows" style="display:grid;gap:28px">
+    <section class="card" aria-labelledby="tl-title">
+      <div class="card-head">
+        <h2 id="tl-title">Labor and non-Labor vote, and who won</h2>
+        <span id="x-timeline"></span>
+      </div>
+      <div class="chips" id="tl-chips" role="group" aria-label="Show series"></div>
+      <div class="tl-scroll" style="margin-top:8px"><svg id="timeline" class="chart-svg" role="group" aria-label="Election timeline. Each year is a button that selects that election."></svg></div>
+      <p class="small">Click a year (or use ← → keys) to load that election. Bars along the bottom show the governing side after each election. Hollow points are unofficial estimates.</p>
+    </section>
+    <section aria-live="polite" id="election" class="card" style="display:grid; gap:22px;"></section>
+  </div>
+
+  <div id="view-seats" role="tabpanel" aria-labelledby="tab-seats" style="display:none;gap:20px"></div>
+
+  <section class="card methods" aria-labelledby="m-title">
+    <h2 id="m-title">How the flows were built</h2>
+    <ul>
+      <li><b>First preferences and seats</b> for every election come from Adam Carr's Psephos archive (national summaries). Where the archive's party votes didn't add up exactly to its stated formal total, the sum of the party figures is used. For 2025 the archive's "Others" figure was inconsistent and was replaced using the AEC's formal-vote total.</li>
+      <li><b>2004–2025: counted flows.</b> The AEC publishes the national and state two-party-preferred flow of preferences by party; those counts are used directly. Parties under 1.2% of the national vote are grouped as "Others". A small Coalition→Labor band appears where Liberal and National candidates ran against each other.</li>
+      <li><b>1949–2001: modelled national flows.</b> The AEC series gives the official national two-party-preferred result, but not flows by party. Major-party votes stay with their party; each minor party's votes are split using a typical historical rate (DLP ≈ 15% to Labor, Democrats ≈ 55%, Greens ≈ 75%, One Nation ≈ 45%, others ≈ 50%), then all rates are shifted by one common amount so the totals match the official 2PP. Treat minor-party bands in these years as indicative.</li>
+      <li><b>1940–1946: estimates.</b> No national distribution was made; the 2PP figures shown (Labor 50.3%, 58.2%, 54.1%) are widely cited unofficial estimates. <b>1919–1937:</b> no reliable national 2PP exists. <b>1901–1917:</b> first past the post, so there were no preferences.</li>
+      <li><b>State breakdowns</b> use the AEC's flows by state and party, so they are available for 2004–2025 only.</li>
+      <li><b>Seat-by-seat counts, 2004–2025,</b> are the AEC's distribution of preferences by division. <b>1901–2001</b> come from the count-by-count results in Adam Carr's Psephos archive (compiled from AEC and earlier Commonwealth records), parsed for this site. Before 1984 a count normally stopped once a candidate had an absolute majority, so many older seats end with more than two candidates. 123 seats were returned unopposed. The territory members (Northern Territory from 1922, ACT from 1949) are included, although they had limited voting rights in early parliaments. In 1901 South Australia and Tasmania each elected their members statewide; those two contests show first preferences and the members elected. For 16 seats the archive's count could not be read reliably (or a candidate appears to be missing from its candidate table), so only first preferences are shown; in another 15 the archive's totals change between counts by more than 1%, probably transcription errors, and are shown as published with a note. Two deferred elections (Dickson 1993, Newcastle 1998) are recorded in a form that couldn't be read and are not included.</li>
+      <li>Before 1955 some seats were uncontested, which slightly understates the national vote for the parties holding them.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <div>Data files: <a href="data/elections.json">elections.json</a> · <a href="data/states.json">states.json</a> · <a href="data/seats.json">seats.json</a> · <a href="data/seat-data-review.csv">seat-data-review.csv</a> (seat records flagged for checking)</div>
+    <div>Sources: <a href="http://psephos.adam-carr.net/countries/a/australia/federalelectionsindex.shtml">Psephos, Adam Carr's Election Archive</a> (first preferences, seats, dates, seat counts 1901–2001) · <a href="https://results.aec.gov.au/">AEC Tally Room</a> (2PP flows by party and state, national and state 2PP, distribution of preferences by division, 2004–2025) · AEC national two-party-preferred series 1949–2001 as tabulated by <a href="https://australianpolitics.com/voting/two-party-preferred/two-party-preferred-statistics-since-1949/">AustralianPolitics.com</a>.</div>
+  </footer>
+</div>
+<div id="tip" role="tooltip"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
